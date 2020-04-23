@@ -97,6 +97,12 @@ func (a *Sdk) addGetParams(request *http.Request) {
 	request.URL.RawQuery = query.Encode()
 }
 
+func (a *Sdk) addHeaders(request *http.Request) {
+	for key, value := range a.header {
+		request.Header.Set(key, value)
+	}
+}
+
 func (a *Sdk) makePostRequest() (string, error) {
 	url := strings.Join([]string{a.host, a.uri}, "")
 
@@ -123,6 +129,7 @@ func (a *Sdk) makePostRequest() (string, error) {
 	}
 
 	a.addGetParams(request)
+	a.addHeaders(request)
 
 	request.Header.Set("Content-Type", "application/json")
 
@@ -153,6 +160,7 @@ func (a *Sdk) makeGetRequest() (string, error) {
 	}
 
 	a.addGetParams(request)
+	a.addHeaders(request)
 
 	response, e := client.Do(request)
 	if e != nil {
@@ -194,6 +202,7 @@ func (a *Sdk) makePutRequest() (string, error) {
 	}
 
 	a.addGetParams(request)
+	a.addHeaders(request)
 
 	request.Header.Set("Content-Type", "application/json")
 
@@ -224,6 +233,7 @@ func (a *Sdk) makeDeleteRequest() (string, error) {
 	}
 
 	a.addGetParams(request)
+	a.addHeaders(request)
 
 	response, e := client.Do(request)
 	if e != nil {
